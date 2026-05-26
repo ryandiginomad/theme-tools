@@ -1,5 +1,17 @@
 # @shopify/theme-check-node
 
+## 3.26.1
+
+### Patch Changes
+
+- ab6c8369: Accept common aliases for built-in Theme Check configs in YAML `extends` values.
+- 8e63afac: Treat theme app extension blocks as theme graph entry points so snippets rendered by app blocks are not reported as orphaned.
+- Updated dependencies [3cc63ff2]
+- Updated dependencies [8e63afac]
+  - @shopify/theme-check-common@3.26.1
+  - @shopify/theme-graph@0.2.7
+  - @shopify/theme-check-docs-updater@3.26.1
+
 ## 3.26.0
 
 ### Patch Changes

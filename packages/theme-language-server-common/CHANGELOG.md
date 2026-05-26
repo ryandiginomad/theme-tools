@@ -1,5 +1,15 @@
 # @shopify/theme-language-server-common
 
+## 2.21.3
+
+### Patch Changes
+
+- 8e63afac: Treat theme app extension blocks as theme graph entry points so snippets rendered by app blocks are not reported as orphaned.
+- Updated dependencies [3cc63ff2]
+- Updated dependencies [8e63afac]
+  - @shopify/theme-check-common@3.26.1
+  - @shopify/theme-graph@0.2.7
+
 ## 2.21.2
 
 ### Patch Changes
