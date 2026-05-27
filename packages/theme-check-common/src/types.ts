@@ -18,6 +18,7 @@ import {
 import { JsonValidationSet, ThemeDocset } from './types/theme-liquid-docs';
 import { AppBlockSchema, SectionSchema, ThemeBlockSchema } from './types/theme-schemas';
 import { DocDefinition } from './liquid-doc/liquidDoc';
+import type { TranslationReferences } from './utils/translation-references';
 
 export * from './jsonc/types';
 export * from './types/schema-prop-factory';
@@ -406,6 +407,11 @@ export interface Dependencies {
    * Returns an empty array if no dependencies found
    */
   getDependencies?: (uri: string) => Promise<Reference[]>;
+
+  /**
+   * Get all translation keys that can be statically resolved in the theme.
+   */
+  getTranslationReferences?: () => Promise<TranslationReferences>;
 }
 
 export type ValidateJSON = (

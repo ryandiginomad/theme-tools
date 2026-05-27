@@ -45,6 +45,7 @@ import { UndefinedObject } from './undefined-object';
 import { UniqueDocParamNames } from './unique-doc-param-names';
 import { UniqueStaticBlockId } from './unique-static-block-id';
 import { UnknownFilter } from './unknown-filter';
+import { UnusedTranslationKey } from './unused-translation-key';
 import { UnrecognizedContentForArguments } from './unrecognized-content-for-arguments';
 import { UnrecognizedRenderSnippetArguments } from './unrecognized-render-snippet-arguments';
 import { UnusedAssign } from './unused-assign';
@@ -117,6 +118,7 @@ export const allChecks: (LiquidCheckDefinition | JSONCheckDefinition)[] = [
   UniqueSettingIds,
   UniqueStaticBlockId,
   UnknownFilter,
+  UnusedTranslationKey,
   UnrecognizedContentForArguments,
   UnrecognizedRenderSnippetArguments,
   UnsupportedDocTag,
