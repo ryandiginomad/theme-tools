@@ -17,6 +17,7 @@ interface ExpressionIssue {
 const TOKEN_PATTERNS = {
   logical: /^(and|or)$/,
   comparison: /^(==|!=|>=|<=|>|<|contains)$/,
+  invalidOperator: /^(&&|\|\||===|startswith)$/,
   invalid: /^[@#$&]$/,
   literal: /^(['"][^'"]*['"]|\d+(?:\.\d+)?|true|false|nil|empty|blank)$/,
 } as const;
@@ -66,6 +67,10 @@ function isValueToken(token: Token): boolean {
 
 function isOperatorToken(token: Token): boolean {
   return token.type === 'logical' || token.type === 'comparison';
+}
+
+function isJavaScriptLogicalOperator(token: Token): boolean {
+  return token.value === '&&' || token.value === '||';
 }
 
 function checkInvalidStartingToken(tokens: Token[]): ExpressionIssue | null {
@@ -146,6 +151,38 @@ function checkLaxParsingIssues(tokens: Token[]): ExpressionIssue | null {
   return null;
 }
 
+function checkInvalidOperatorsAfterValue(tokens: Token[]): ExpressionIssue | null {
+  for (let i = 1; i < tokens.length; i++) {
+    const current = tokens[i];
+    const previous = tokens[i - 1];
+
+    if (!isValueToken(previous) || current.type !== 'invalidOperator') continue;
+
+    const validExpr = tokens
+      .slice(0, i)
+      .map((t) => t.value)
+      .join(' ');
+    const ignored = tokens
+      .slice(i)
+      .map((t) => t.value)
+      .join(' ');
+
+    if (isJavaScriptLogicalOperator(current)) {
+      return {
+        message: `Conditional is invalid. Anything after '${validExpr}' will be ignored. Use 'and'/'or' instead of '&&'/'||' for multiple conditions`,
+        fix: validExpr,
+      };
+    }
+
+    return {
+      message: `Conditional is invalid. Anything after '${validExpr}' will be ignored: '${ignored}'`,
+      fix: validExpr,
+    };
+  }
+
+  return null;
+}
+
 function analyzeConditionalExpression(markup: string): ExpressionIssue | null {
   const trimmed = markup.trim();
   if (!trimmed) return null;
@@ -160,6 +197,7 @@ function analyzeConditionalExpression(markup: string): ExpressionIssue | null {
   return (
     checkInvalidStartingToken(tokens) ||
     checkTrailingTokensAfterComparison(tokens) ||
-    checkLaxParsingIssues(tokens)
+    checkLaxParsingIssues(tokens) ||
+    checkInvalidOperatorsAfterValue(tokens)
   );
 }
